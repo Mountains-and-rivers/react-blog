@@ -19,6 +19,16 @@ app.post('/signin', function (req, res) {
   }
 })
 
+app.post('/signup', function (req, res) {
+  var user_name=req.body.name;
+  var user_email=req.body.email;
+  var password=req.body.password;
+  console.log("--------------------------")
+  console.log(user_name,user_email,password)
+  res.send(JSON.stringify({name:user_name,email:user_email,pass:password}))
+})
+
+
 app.listen(7777,function(){
     console.log("Started listening on port", 7777);
 })
