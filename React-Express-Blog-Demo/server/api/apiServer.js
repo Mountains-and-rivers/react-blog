@@ -12,6 +12,13 @@ import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
+import redis from 'redis'
+
+let RedisStore = require('connect-redis')(session),
+RDS_PORT = 6379,
+RDS_HOST = '127.0.0.1';
+
+let client = redis.createClient(RDS_PORT, RDS_HOST);
 
 const port = config.apiPort;
 
@@ -19,10 +26,11 @@ const app = new Express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser('express_react_cookie'));
 app.use(session({
+    store: new RedisStore({ client }),
     secret:'express_react_cookie',
-    resave: true,
+    resave: false,
     saveUninitialized:true,
-    cookie: {maxAge: 60 * 1000 * 30}//过期时间
+    cookie: {maxAge: 1000 * 30}//过期时间
 }));
 
 
